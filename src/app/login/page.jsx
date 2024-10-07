@@ -11,28 +11,53 @@ import {
 	Alert,
 } from "react-bootstrap";
 import Header from "@/components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import decodeToken from "./decodeToken";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+	const router = useRouter();
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const user = localStorage.getItem("logrev-user");
+		if (user) router.push("/");
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// const endpoint = import.meta.env.VITE_API_ENDPOINT;
-		// console.log(endpoint);
-		// const path = "/v1alpha1/mentors/login";
-
+		setLoading(true);
 		try {
-			const response = await axios.post("http://localhost:8080");
+			setShowAlert(false);
 
-			console.log(response);
-		} catch (error) {
-			setError(`Unknown error occured: ${error}`);
+			const response = await axios.post("/api/auth", { email, password });
+
+			const { access_token, refresh_token } = response.data.data;
+			let decodedToken = decodeToken(access_token);
+			decodedToken["email"] = email;
+			decodedToken["access"] = access_token;
+			decodedToken["refresh"] = refresh_token;
+
+			localStorage.setItem("logrev-user", JSON.stringify(decodedToken));
+
+			router.push("/");
+		} catch (err) {
+			const errorMessage = err.response.data.error.message;
+
+			setError(`Unknown error occured: ${errorMessage}`);
+			setPassword("");
+			setShowAlert(true);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -87,6 +112,7 @@ export default function Login() {
 										/>
 									</FloatingLabel>
 									<Button variant="dark" type="submit" className="mt-3">
+										{loading ? <FontAwesomeIcon icon={faSpinner} spin /> : null}{" "}
 										Login
 									</Button>
 								</Form>
