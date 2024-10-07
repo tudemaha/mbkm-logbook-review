@@ -29,7 +29,10 @@ export default function Login() {
 
 	useEffect(() => {
 		const user = localStorage.getItem("logrev-user");
-		if (user) router.push("/");
+		if (user) {
+			router.push("/");
+			return;
+		}
 	}, []);
 
 	const handleSubmit = async (e) => {
