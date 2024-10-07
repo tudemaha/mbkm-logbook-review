@@ -2,8 +2,24 @@
 
 import { Container, Row, Col, Table, Badge, Button } from "react-bootstrap";
 import Header from "@/components/Header";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Index() {
+	useEffect(() => {
+		const response = axios.get("/api/mentees", {
+			headers: {
+				Authorization: "test",
+			},
+		});
+
+		response
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {});
+	}, []);
+
 	return (
 		<>
 			<Header />

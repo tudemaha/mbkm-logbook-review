@@ -8,7 +8,7 @@ export async function POST(req) {
   const apiPath = "/v1alpha1/mentors/login";
 
   try {
-    let res = await axios.post(apiHost + apiPath, reqBody, {
+    const res = await axios.post(apiHost + apiPath, reqBody, {
       headers: {"Content-Type": 'application/json'}
     });
 

@@ -39,13 +39,22 @@ export default function Login() {
 		try {
 			setShowAlert(false);
 
-			const response = await axios.post("/api/auth", { email, password });
+			const authRes = await axios.post("/api/auth", { email, password });
 
-			const { access_token, refresh_token } = response.data.data;
+			const { access_token, refresh_token } = authRes.data.data;
 			let decodedToken = decodeToken(access_token);
 			decodedToken["email"] = email;
 			decodedToken["access"] = access_token;
 			decodedToken["refresh"] = refresh_token;
+
+			const programRes = await axios.get("/api/programs", {
+				headers: {
+					Authorization: access_token,
+				},
+			});
+			const { program_id, name } = programRes.data.data[0];
+			decodedToken["program_id"] = program_id;
+			decodedToken["program_name"] = name;
 
 			localStorage.setItem("logrev-user", JSON.stringify(decodedToken));
 
