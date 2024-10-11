@@ -35,7 +35,6 @@ export default function Index() {
 				);
 				setMentees(response.data.data);
 
-				console.log(response.data.data[0].activity_id);
 				user["activity_id"] = response.data.data[0].activity_id;
 				setJsonItem("logrev-user", user);
 			} catch (error) {
@@ -145,7 +144,7 @@ export default function Index() {
 														variant="dark"
 														size="sm"
 														className="badge rounded-pill"
-														href={`/logbooks/${mentee.activity_id}/${mentee.id}`}
+														href={`/logbooks/${mentee.id}`}
 													>
 														Details
 													</Button>
