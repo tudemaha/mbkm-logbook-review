@@ -116,7 +116,12 @@ export default function LogbookList() {
 													variant="dark"
 													size="sm"
 													className="badge rounded-pill"
-													href={`/logbooks/${menteeId}/${logbook.id}`}
+													href={
+														logbook.status !== "DRAFT"
+															? `/logbooks/${menteeId}/${logbook.id}`
+															: `/logbooks/${menteeId}`
+													}
+													disabled={logbook.status === "DRAFT" ? true : false}
 												>
 													Details
 												</Button>
