@@ -15,6 +15,8 @@ export default function LogbookList() {
 	const [logbooks, setLogbooks] = useState([]);
 
 	useEffect(() => {
+		document.title = "LogRev | Logbooks";
+
 		const user = getJsonItem("logrev-user");
 		if (!user) {
 			router.push("/login");

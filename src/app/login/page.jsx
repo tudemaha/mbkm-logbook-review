@@ -29,6 +29,8 @@ export default function Login() {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+		document.title = "LogRev | Login";
+
 		const user = getJsonItem("logrev-user");
 		if (user) {
 			router.push("/");

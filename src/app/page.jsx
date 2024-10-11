@@ -15,6 +15,8 @@ export default function Index() {
 	const [program, setProgram] = useState("");
 
 	useEffect(() => {
+		document.title = "LogRev | Home";
+
 		let user = getJsonItem("logrev-user");
 		if (!user) {
 			router.push("/login");

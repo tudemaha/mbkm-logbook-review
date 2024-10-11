@@ -17,6 +17,8 @@ export default function LogbookDetail() {
 	const [mentee, setMentee] = useState({});
 
 	useEffect(() => {
+		document.title = "LogRev | Logbook Detail";
+
 		const user = getJsonItem("logrev-user");
 		if (!user) {
 			router.push("/login");
