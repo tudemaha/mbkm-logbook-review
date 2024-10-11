@@ -5,3 +5,7 @@ export function getJsonItem(name) {
     const userParse = JSON.parse(user);
     return userParse;
 }
+
+export function setJsonItem(name, json) {
+    localStorage.setItem(name, JSON.stringify(json));
+}

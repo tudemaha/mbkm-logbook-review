@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { getJsonItem } from "./utils/localStorage";
+import { getJsonItem, setJsonItem } from "./utils/localStorage";
 
 export default function Index() {
 	const router = useRouter();
@@ -15,7 +15,7 @@ export default function Index() {
 	const [program, setProgram] = useState("");
 
 	useEffect(() => {
-		const user = getJsonItem("logrev-user");
+		let user = getJsonItem("logrev-user");
 		if (!user) {
 			router.push("/login");
 			return;
@@ -34,8 +34,11 @@ export default function Index() {
 					}
 				);
 				setMentees(response.data.data);
+
+				console.log(response.data.data[0].activity_id);
+				user["activity_id"] = response.data.data[0].activity_id;
+				setJsonItem("logrev-user", user);
 			} catch (error) {
-				console.log(error);
 				localStorage.removeItem("logrev-user");
 				if (error.response.status === 401) {
 					router.push("/login");
@@ -142,7 +145,7 @@ export default function Index() {
 														variant="dark"
 														size="sm"
 														className="badge rounded-pill"
-														href={`/logbooks/${mentee.id_reg_penawaran}`}
+														href={`/logbooks/${mentee.activity_id}/${mentee.id}`}
 													>
 														Details
 													</Button>

@@ -17,7 +17,7 @@ import decodeToken from "./decodeToken";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
-import { getJsonItem } from "../utils/localStorage";
+import { getJsonItem, setJsonItem } from "../utils/localStorage";
 
 export default function Login() {
 	const router = useRouter();
@@ -60,7 +60,7 @@ export default function Login() {
 			decodedToken["program_id"] = program_id;
 			decodedToken["program_name"] = name;
 
-			localStorage.setItem("logrev-user", JSON.stringify(decodedToken));
+			setJsonItem("logrev-user", decodedToken);
 
 			router.push("/");
 		} catch (err) {
