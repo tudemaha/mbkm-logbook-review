@@ -2,15 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
-import {
-	Row,
-	Col,
-	Button,
-	Badge,
-	Container,
-	Card,
-	Modal,
-} from "react-bootstrap";
+import SubmitModal from "@/components/SubmitModal";
+import { Row, Col, Button, Badge, Container, Card } from "react-bootstrap";
 import { useRouter, useParams } from "next/navigation";
 import { getJsonItem } from "@/app/utils/localStorage";
 import axios from "axios";
@@ -20,7 +13,6 @@ export default function LogbookDetail() {
 	const { menteeId, logbookId } = useParams();
 
 	const [modalShow, setModalShow] = useState(false);
-	const [showAccept, setShowAccept] = useState(false);
 	const [logbook, setLogbook] = useState({});
 	const [mentee, setMentee] = useState({});
 
@@ -163,10 +155,13 @@ export default function LogbookDetail() {
 												: "Already Accepted"}
 										</Button>
 										{logbook.status !== "ACCEPTED" ? (
-											<VerticalCenterModal
+											<SubmitModal
+												title="Accept Logbook?"
+												body="Once you accept, your notes or review cannot be editted."
+												button_text="Accept"
 												show={modalShow}
 												onHide={() => setModalShow(false)}
-												onAccept={handleAccept}
+												onSubmit={handleAccept}
 											/>
 										) : null}
 									</Card.Body>
@@ -177,31 +172,5 @@ export default function LogbookDetail() {
 				</Row>
 			</Container>
 		</>
-	);
-}
-
-function VerticalCenterModal(props) {
-	return (
-		<Modal
-			{...props}
-			size="md"
-			aria-labelledby="vertical-center-modal"
-			centered
-		>
-			<Modal.Header closeButton>
-				<Modal.Title id="vertical-center-modal">Accept Logbook?</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<p>Once you accept, your notes or review cannot be editted.</p>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button className="rounded" variant="dark" onClick={props.onAccept}>
-					Accept
-				</Button>
-				<Button className="rounded" variant="light" onClick={props.onHide}>
-					Cancel
-				</Button>
-			</Modal.Footer>
-		</Modal>
 	);
 }

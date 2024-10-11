@@ -1,11 +1,15 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import SubmitModal from "./SubmitModal";
+import { useRouter } from "next/navigation";
 
 function Header() {
+	const router = useRouter();
 	const path = usePathname();
 
 	const [name, setName] = useState("");
+	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
 		const user = localStorage.getItem("logrev-user");
@@ -14,6 +18,11 @@ function Header() {
 			setName(userParse.name);
 		}
 	}, []);
+
+	const handleLogout = () => {
+		localStorage.removeItem("logrev-user");
+		router.push("/login");
+	};
 
 	return (
 		<Navbar
@@ -31,10 +40,20 @@ function Header() {
 						<Navbar.Collapse id="basic-navbar-nav">
 							<Nav className="ms-auto">
 								<NavDropdown title={name} id="basic-nav-dropdown">
-									<NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+									<NavDropdown.Item onClick={() => setShowModal(true)}>
+										Logout
+									</NavDropdown.Item>
 								</NavDropdown>
 							</Nav>
 						</Navbar.Collapse>
+						<SubmitModal
+							title="Logout?"
+							body="You will be logged out."
+							button_text="Logout"
+							show={showModal}
+							onHide={() => setShowModal(false)}
+							onSubmit={handleLogout}
+						/>
 					</>
 				) : null}
 			</Container>
