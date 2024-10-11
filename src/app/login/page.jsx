@@ -17,6 +17,7 @@ import decodeToken from "./decodeToken";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import { getJsonItem } from "../utils/localStorage";
 
 export default function Login() {
 	const router = useRouter();
@@ -28,12 +29,12 @@ export default function Login() {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		const user = localStorage.getItem("logrev-user");
+		const user = getJsonItem("logrev-user");
 		if (user) {
 			router.push("/");
 			return;
 		}
-	}, []);
+	}, [router]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
