@@ -103,7 +103,7 @@ export default function LogbookDetail() {
 			}
 		} finally {
 			setModalShow(false);
-			router.refresh();
+			location.reload();
 		}
 	};
 
